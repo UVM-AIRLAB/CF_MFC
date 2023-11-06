@@ -21,11 +21,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
- *
- * hello_world.c - App layer application of a simple hello world debug print every
- *   2 seconds.
  */
 
+
+/*
+IDEAS:
+Should the Kalman Filter for parameter estimation be a single function?
+
+Needed:
+-MFC Function
+-Position Control Call
+-Attitude Control Call
+-MFC Parameter Declaration
+
+*/
 
 #include <string.h>
 #include <stdint.h>
@@ -43,7 +52,7 @@
 void appMain() {
   DEBUG_PRINT("Waiting for activation ...\n");
 
-  while(1) {
+while(1) {
     vTaskDelay(M2T(2000));
   }
 }
