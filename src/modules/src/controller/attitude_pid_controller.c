@@ -102,6 +102,8 @@ static int16_t yawOutput;
 
 static bool isInit;
 
+// #1 Initialization 
+
 void attitudeControllerInit(const float updateDt)
 {
   if(isInit)
@@ -133,10 +135,14 @@ void attitudeControllerInit(const float updateDt)
   isInit = true;
 }
 
+// #2 Controller Test
+
 bool attitudeControllerTest()
 {
   return isInit;
 }
+
+// #3 Controller Update Functions
 
 void attitudeControllerCorrectRatePID(
        float rollRateActual, float pitchRateActual, float yawRateActual,
@@ -207,6 +213,9 @@ float attitudeControllerGetYawMaxDelta(void)
 {
   return yawMaxDelta;
 }
+
+// END CONTROLLER
+
 
 /**
  *  Log variables of attitude PID controller
