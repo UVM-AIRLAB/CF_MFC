@@ -26,13 +26,16 @@
 
 /*
 IDEAS:
-Should the Kalman Filter for parameter estimation be a single function?
+Should the Kalman Filter for parameter estimation be a single function?\
+** Hardcode the pole placement **
+
 
 Needed:
--MFC Function
--Position Control Call
--Attitude Control Call
--MFC Parameter Declaration
+- Struct containing the controller gains, beta values
+- Kalman Filter for F estimation
+- Error calculation function
+- Control effort calculation function
+- 
 
 */
 
@@ -60,22 +63,35 @@ while(1) {
 // The new controller goes here --------------------------------------------
 // Move the includes to the the top of the file if you want to
 #include "controller.h"
+#include "MFC_controller.h"
 
 // Call the PID controller in this example to make it possible to fly. When you implement you own controller, there is
 // no need to include the pid controller.
 #include "controller_pid.h"
+#include "attitude_controller.h"
+#include "position_controller.h"
+
+// #1 Initialization
+
+static bool testComplete;
 
 void controllerOutOfTreeInit() {
   // Initialize your controller data here...
 
   // Call the PID controller instead in this example to make it possible to fly
   controllerPidInit();
+
+  testComplete = true;
 }
+
+// #2 Controller Test
 
 bool controllerOutOfTreeTest() {
   // Always return true
-  return true;
+  return testComplete;
 }
+
+// #3 Controller Update Functions
 
 void controllerOutOfTree(control_t *control, const setpoint_t *setpoint, const sensorData_t *sensors, const state_t *state, const uint32_t tick) {
   // Implement your controller here...
@@ -83,3 +99,5 @@ void controllerOutOfTree(control_t *control, const setpoint_t *setpoint, const s
   // Call the PID controller instead in this example to make it possible to fly
   controllerPid(control, setpoint, sensors, state, tick);
 }
+
+// #4 Logging Parameters
