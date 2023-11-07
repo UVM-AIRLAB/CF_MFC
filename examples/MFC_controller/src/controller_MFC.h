@@ -1,7 +1,7 @@
-#ifndef __MFC_CONTROLLER_H__
-#define __MFC_CONTROLLER_H__
+#ifndef __CONTROLLER_MFC_H__
+#define __CONTROLLER_MFC_H__
 
-#include "stabilizer_types.h"
+#include "stabilizer_types.h" //Important parameters such as , ATTITUDERATE, POSITIONRATE, and Loop rates
 #include "math3d.h"
 
 typedef struct 
@@ -42,10 +42,10 @@ typedef struct
     float cmd_pitch;
     float cmd_yaw;
 
-}; MFC_CONTROLLER_t
+}; CONTROLLER_MFC_t
 
-void controllerOutOfTreeInit(void);
-bool controllerOutOfTreeTest(void);
-void controllerOutOfTree(control_t *control, const setpoint_t *setpoint, const sensorData_t *sensors, const state_t *state, const uint32_t tick)
+void controllerOutOfTreeInit(CONTROLLER_MFC_t* self);
+bool controllerOutOfTreeTest(CONTROLLER_MFC_t* self);
+void controllerOutOfTree(CONTROLLER_MFC_t* self, control_t *control, const setpoint_t *setpoint, const sensorData_t *sensors, const state_t *state, const uint32_t tick)
 
-#endif //__MFC_CONTROLLER_H__
+#endif //__CONTROLLER_MFC_H__

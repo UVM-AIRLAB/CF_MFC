@@ -42,15 +42,34 @@ Needed:
 #include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
-
 #include "app.h"
-
 #include "FreeRTOS.h"
 #include "task.h"
 
 #define DEBUG_MODULE "MFCCONTROLLER"
 #include "debug.h"
 
+// CONTROLLER CALLS
+/*
+MFC will be used on the i) Z ii) XY iii) Attitude. Phase i will require a standard attitude controller call from the default library with a 
+modfied position controller.
+
+Phase i Requirements:
+- Controller Header
+- PID Controller Header
+- Attitude Controller Header
+-> Modified Position Controller / MFC Controller Header
+*/
+
+// Move the includes to the the top of the file if you want to
+#include "controller.h"
+#include "controller_pid.h"
+#include "attitude_controller.h"
+#include "controller_MFC.h"
+#include "position_controller_MFC.h"
+
+
+#define ATTITUDE_UPDATE_DT (float)(1.0f/ATTITUDE_RATE) // Line from controller_pid.c for updating attitude 
 
 void appMain() {
   DEBUG_PRINT("Waiting for activation ...\n");
@@ -60,35 +79,32 @@ while(1) {
   }
 }
 
-// The new controller goes here --------------------------------------------
-// Move the includes to the the top of the file if you want to
-#include "controller.h"
-#include "MFC_controller.h"
-
-// Call the PID controller in this example to make it possible to fly. When you implement you own controller, there is
-// no need to include the pid controller.
-#include "controller_pid.h"
-#include "attitude_controller.h"
-#include "position_controller.h"
-
 // #1 Initialization
 
-static bool testComplete;
+/*
+Intialization will require the initialization of 
+i) Attitude Controller
+ii) Modified Position Controller / MFC Controller
+*/
+
+static bool initTest;
 
 void controllerOutOfTreeInit() {
-  // Initialize your controller data here...
+  /*
+  TODO:
+    Write an intialization function for a modified position PID controller with the Z direction referencing an MFC structure
+  */
+  attitudeControllerInit(ATTITUDE_UPDATE_DT); 
 
-  // Call the PID controller instead in this example to make it possible to fly
-  controllerPidInit();
-
-  testComplete = true;
+  initTest = true;
 }
 
 // #2 Controller Test
-
 bool controllerOutOfTreeTest() {
-  // Always return true
-  return testComplete;
+  // Return true once the initialization is finished
+
+  initTest &= attitudeControllerTest(); // MUST PASS ATTITUDE CONTROLLER TEST AS WELL
+  return initTest;
 }
 
 // #3 Controller Update Functions
