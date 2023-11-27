@@ -26,9 +26,7 @@
 
 /*
 IDEAS:
-Should the Kalman Filter for parameter estimation be a single function?\
-** Hardcode the pole placement **
-
+Should switching logic be added in for setting the controller to the default PID?
 
 Needed:
 - Struct containing the controller gains, beta values
@@ -61,7 +59,7 @@ Phase i Requirements:
 -> Modified Position Controller / MFC Controller Header
 */
 
-// Move the includes to the the top of the file if you want to
+// Move the includes to the top of the file if you want to
 #include "controller.h"
 #include "controller_pid.h"
 #include "attitude_controller.h"
@@ -87,7 +85,7 @@ i) Attitude Controller
 ii) Modified Position Controller / MFC Controller
 */
 
-static bool initTest;
+static bool pass;
 
 void controllerOutOfTreeInit() {
   /*
@@ -96,15 +94,15 @@ void controllerOutOfTreeInit() {
   */
   attitudeControllerInit(ATTITUDE_UPDATE_DT); 
 
-  initTest = true;
+  pass = true;
 }
 
-// #2 Controller Test
+// #2 Controller Test. Same implementation as the standard PID controller and the INDI controller
 bool controllerOutOfTreeTest() {
   // Return true once the initialization is finished
 
-  initTest &= attitudeControllerTest(); // MUST PASS ATTITUDE CONTROLLER TEST AS WELL
-  return initTest;
+  pass &= attitudeControllerTest(); // MUST PASS ATTITUDE CONTROLLER TEST AS WELL
+  return pass;
 }
 
 // #3 Controller Update Functions
